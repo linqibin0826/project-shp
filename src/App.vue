@@ -1,28 +1,32 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <div id="app">
+        <Header></Header>
+        <!-- 路由组件占位符 -->
+        <router-view></router-view>
+        <Footer v-show="$route.meta.showFooter"></Footer>
+    </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Header from "@/components/Header/index.vue";
+import Footer from "@/components/Footer/index.vue";
+import {mapActions} from "vuex";
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+    name: 'App',
+    components: {Header, Footer},
+    methods: {
+        ...mapActions({
+            reqCategoryList: 'reqCategoryList'
+        }),
+    },
+    mounted() {
+        // 放在root容器中，只获取一次3级分类
+        this.reqCategoryList();
+    }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
