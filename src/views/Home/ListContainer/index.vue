@@ -1,49 +1,18 @@
 <script>
 import {mapActions, mapGetters} from "vuex";
-import Swiper from "swiper";
 
 
 export default {
     name: "ListContainer",
-    data() {
-        return {
-            mySwiper: null
-        }
-    },
     computed: {
         ...mapGetters(['banners']),
     },
     methods: {
         ...mapActions(['reqBannerList']),
-        initSwiper() {
-            if (this.mySwiper) {
-                this.mySwiper.destroy(); // 销毁旧的Swiper实例
-            }
-            this.mySwiper = new Swiper('#mySwiper', {
-                loop: true, // 循环模式
-                autoplay: true,
-                pagination: {
-                    el: '.swiper-pagination', // 分页器
-                    clickable: true,
-                },
-                navigation: {
-                    nextEl: '.swiper-button-next', // 下一页按钮
-                    prevEl: '.swiper-button-prev', // 上一页按钮
-                },
-            });
-        },
     },
     mounted() {
         this.reqBannerList();
     },
-    watch: {
-        banners() {
-            // 监听banners数据变化
-            this.$nextTick(() => {
-                this.initSwiper(); // 初始化Swiper
-            });
-        },
-    }
 }
 </script>
 
@@ -52,19 +21,7 @@ export default {
         <div class="sortList clearfix">
             <div class="center">
                 <!--banner轮播-->
-                <div class="swiper-container" id="mySwiper">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide" v-for="banner in banners" :key="banner.id">
-                            <img :src="banner.imgUrl" alt=""/>
-                        </div>
-                    </div>
-                    <!-- 如果需要分页器 -->
-                    <div class="swiper-pagination"></div>
-
-                    <!-- 如果需要导航按钮 -->
-                    <div class="swiper-button-prev"></div>
-                    <div class="swiper-button-next"></div>
-                </div>
+                <Carousel :carousels="banners"></Carousel>
             </div>
             <div class="right">
                 <div class="news">

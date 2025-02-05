@@ -5,6 +5,7 @@ import Rank from "@/views/Home/Rank/index.vue";
 import Like from "@/views/Home/Like/index.vue";
 import Floor from "@/views/Home/Floor/index.vue";
 import Brand from "@/views/Home/Brand/index.vue";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
     name: "Home",
@@ -15,6 +16,15 @@ export default {
         Like,
         ListContainer,
         TodayRecommend
+    },
+    computed: {
+        ...mapGetters(['floorList'])
+    },
+    methods: {
+        ...mapActions(['reqFloorList']),
+    },
+    mounted() {
+        this.reqFloorList()
     }
 }
 </script>
@@ -27,8 +37,7 @@ export default {
         <today-recommend/>
         <rank/>
         <like/>
-        <floor/>
-        <floor/>
+        <floor v-for="floor in floorList" :key="floor.id" :floor="floor"/>
         <brand/>
     </div>
 </template>
